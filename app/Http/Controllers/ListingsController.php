@@ -14,9 +14,9 @@ class ListingsController extends Controller
         $this->middleware('auth');
     }
 
-    public function index(Request $request, Listing $listing)
+    public function index(Listing $listingModel)
     {
-        $listings = $listing->list();
+        $listings = $listingModel->list();
 
         return view('listing/index', [
             'listings' => $listings,
@@ -28,32 +28,16 @@ class ListingsController extends Controller
         return view('listing/new');
     }
 
-    public function edit($listing_id, listing $listings)
+    public function edit($listing_id, Listing $listingModel)
     {
-        $listing = $listings->find($listing_id);
+        $listing = $listingModel->find($listing_id);
 
         return view('listing/edit', [
             'listing' => $listing,
         ]);
     }
 
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), ['list_name' => 'required|max:255',]);
-
-         if ($validator->fails()) {
-             return redirect('/new')->withErrors($validator->errors())->withInput();
-         }
-
-         $listings = new Listing();
-         $listings->title = $request->list_name;
-         $listings->user_id = Auth::user()->id;
-
-         $listings->save();
-         return redirect('/');
-    }
-
-    public function update(Request $request)
+    public function store(Request $request, Listing $listingModel)
     {
         $validator = Validator::make($request->all(), ['list_name' => 'required|max:255',]);
 
@@ -61,10 +45,34 @@ class ListingsController extends Controller
             return redirect('/new')->withErrors($validator->errors())->withInput();
         }
 
-        $listing = Listing::find($request->id);
+        $listingModel->title = $request->list_name;
+        $listingModel->user_id = Auth::user()->id;
+
+        $listingModel->save();
+        return redirect('/');
+    }
+
+    public function update(Request $request, Listing $listingModel)
+    {
+        $validator = Validator::make($request->all(), ['list_name' => 'required|max:255',]);
+
+        if ($validator->fails()) {
+            return redirect('/new')->withErrors($validator->errors())->withInput();
+        }
+
+        $listing = $listingModel->find($request->id);
         $listing->title = $request->list_name;
 
         $listing->save();
+        return redirect('/');
+    }
+
+    public function destroy($listing_id, Listing $listingModel)
+    {
+        /** @var Listing $listing */
+        $listing = $listingModel->find($listing_id);
+
+        $listing->delete();
         return redirect('/');
     }
 }

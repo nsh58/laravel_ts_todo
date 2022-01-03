@@ -24,6 +24,8 @@ Route::post('/listings',[ListingsController::class, 'store']);
 
 Route::post('/listings/update/', [ListingsController::class, 'update'])->name('update');
 
+Route::get('/listings/delete/{id}', [ListingsController::class, 'destroy'])->name('delete');
+
 
 
 Route::get('/dashboard', function () {

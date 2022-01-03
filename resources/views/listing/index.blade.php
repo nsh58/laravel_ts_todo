@@ -9,7 +9,7 @@
                 <div class="list_header">
                     <h2 class="list_header_title">{{ $listing->title }}</h2>
                     <div class="list_header_action">
-                        <a onclick="return confirm('{{ $listing->title }}を削除して大丈夫ですか？')" href="{{ url('/listingsdelete', $listing->id) }}">削除</a>
+                        <a onclick="return confirm('{{ $listing->title }}を削除して大丈夫ですか？')" href="{{ url('/listings/delete', $listing->id) }}">削除</a>
                         <a href="{{ url('/listings', $listing->id) }}">編集</a>
                     </div>
                 </div>
