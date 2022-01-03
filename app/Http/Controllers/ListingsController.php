@@ -39,13 +39,13 @@ class ListingsController extends Controller
 
     public function store(Request $request, Listing $listingModel)
     {
-        $validator = Validator::make($request->all(), ['list_name' => 'required|max:255',]);
+        $validator = Validator::make($request->all(), ['title' => 'required|max:255',]);
 
         if ($validator->fails()) {
             return redirect('/new')->withErrors($validator->errors())->withInput();
         }
 
-        $listingModel->title = $request->list_name;
+        $listingModel->title = $request->title;
         $listingModel->user_id = Auth::user()->id;
 
         $listingModel->save();
@@ -54,14 +54,14 @@ class ListingsController extends Controller
 
     public function update(Request $request, Listing $listingModel)
     {
-        $validator = Validator::make($request->all(), ['list_name' => 'required|max:255',]);
+        $validator = Validator::make($request->all(), ['title' => 'required|max:255',]);
 
         if ($validator->fails()) {
             return redirect('/new')->withErrors($validator->errors())->withInput();
         }
 
         $listing = $listingModel->find($request->id);
-        $listing->title = $request->list_name;
+        $listing->title = $request->title;
 
         $listing->save();
         return redirect('/');
