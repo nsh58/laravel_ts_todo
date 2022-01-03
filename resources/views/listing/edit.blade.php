@@ -8,7 +8,7 @@
             <div class="form-group">
                 <label for="listing" class="col-sm-3 control-label">リスト名</label>
                 <div class="col-sm-6">
-                    <input type="text" name="list_name" class="form-control" value="{{ $listing->title }}">
+                    <input type="text" name="title" class="form-control" value="{{ $listing->title }}">
                 </div>
             </div>
             <div class="form-group">

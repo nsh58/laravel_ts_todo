@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Listing;
 use App\Models\User;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -11,8 +12,6 @@ use Faker\Generator as Faker;
 
 class ListingControllerTest extends TestCase
 {
-    use HasFactory;
-
     /**
      * A basic feature test example.
      *
@@ -40,4 +39,46 @@ class ListingControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_create_listing()
+    {
+        $user = User::factory()->create([
+            'password' => bcrypt('Test1234')
+        ]);
+
+        $response = $this->actingAs($user)->post('/listings', [
+            'user_id' => $user->id,
+            'title' => 'test_title',
+        ]);
+
+        $response->assertRedirect('/');
+    }
+
+    public function test_edit()
+    {
+        $user = User::factory()->create([
+            'password' => bcrypt('Test1234')
+        ]);
+
+        $listing = Listing::factory()->create(['user_id' => $user->id ]);
+
+        $response = $this->actingAs($user)->get('/listings/' . $listing->id );
+
+        $response->assertStatus(200);
+    }
+
+    public function test_update()
+    {
+        $user = User::factory()->create([
+            'password' => bcrypt('Test1234')
+        ]);
+
+        $listing = Listing::factory()->create(['user_id' => $user->id ]);
+
+        $response = $this->actingAs($user)->post('/listings/update/', [
+            'id' => $listing->id,
+            'title' => 'edit_title',
+        ]);
+
+        $response->assertRedirect('/');
+    }
 }
