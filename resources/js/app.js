@@ -1,11 +1,7 @@
 require('./bootstrap');
 
-import App from "./components/App.svelte";
+import Alpine from 'alpinejs';
 
-const app = new App({
-    target: document.body
-});
+window.Alpine = Alpine;
 
-window.app = app;
-
-export default app;
+Alpine.start();
